@@ -21,6 +21,11 @@ const waitForBlog = (async () => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: "users", key: "id" },
+      },
       likes: {
         type: DataTypes.INTEGER,
         defaultValue: 0,

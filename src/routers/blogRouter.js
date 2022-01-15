@@ -22,15 +22,31 @@ router.post("/api/blogs", async (req, res, next) => {
 
 router.delete("/api/blogs/:id", async (req, res, next) => {
   try {
-    const id = req.params.id;
-    if (!id) throw "no id given";
-    const blog = await Blog.findByPk(id);
-    if (!blog) throw "blog not found";
+    const blog = await getBlogByReq(req);
     await blog.destroy();
     res.json({ message: "deleted!" });
   } catch (error) {
     next(error);
   }
 });
+
+router.put("/api/blogs/:id", async (req, res, next) => {
+  try {
+    const blog = await getBlogByReq(req);
+    blog.likes++;
+    await blog.save();
+    res.json(blog);
+  } catch (error) {
+    next(error);
+  }
+});
+
+async function getBlogByReq(req) {
+  const id = req.params.id;
+  if (!id) throw "no id given";
+  const blog = await Blog.findByPk(id);
+  if (!blog) throw "blog not found";
+  return blog;
+}
 
 module.exports = router;

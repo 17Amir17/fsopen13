@@ -1,11 +1,10 @@
-const express = require("express");
+const { User, waitForUser } = require("./schemas/user");
 const { Blog, waitForBlog } = require("./schemas/blog");
-
-const app = express();
 
 const init = (async () => {
   await waitForBlog;
+  await waitForUser;
   return true;
 })();
 
-module.exports = { Blog, init };
+module.exports = { Blog, User, init };
