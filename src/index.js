@@ -1,5 +1,5 @@
 const express = require("express");
-const { Blog, init } = require("./db/index");
+const { connectToDatabase } = require("./utils/db");
 const blogsRouter = require("./routers/blogRouter");
 
 const app = express();
@@ -13,10 +13,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err });
 });
 
-(async () => {
-  await init;
-  console.log("DB Ready!");
+async function start() {
+  console.log("Connecting to db");
+  await connectToDatabase();
   app.listen(port, () => {
-    console.log(`Listening on ${port}`);
+    console.log("Listening on " + port);
   });
-})();
+}
+
+start();
